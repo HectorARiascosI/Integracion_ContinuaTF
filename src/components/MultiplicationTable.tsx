@@ -1,13 +1,15 @@
 // src\components\MultiplicationTable.tsx
 import { useState } from "react";
 
+const TABLE_LENGTH = 10;
+
 export default function MultiplicationTable() {
   const [number, setNumber] = useState<number | null>(null);
   const [table, setTable] = useState<number[]>([]);
 
   const generateTable = () => {
     if (number === null || isNaN(number)) return;
-    const result = Array.from({ length: 10 }, (_, i) => (i + 1) * number);
+    const result = Array.from({ length: TABLE_LENGTH }, (_, i) => (i + 1) * number);
     console.log(result);
     setTable(result);
   };
