@@ -23,8 +23,8 @@ El aplicativo incluye:
 Clonar el repositorio:
 
 ```bash
-git clone https://github.com/guswill24/ucc_ing_web.git
-cd clase-ucc
+git clone https://github.com/HectorARiascosI/Integracion_ContinuaTF.git
+cd Integracion_ContinuaTF
 ```
 
 Instalar dependencias:
