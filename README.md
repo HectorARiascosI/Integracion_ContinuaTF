@@ -108,6 +108,16 @@ src/
 
 ---
 
+## Rutas principales
+
+- `/` Inicio
+- `/matematicas` Área de Matemáticas
+- `/naturales` Área de Ciencias Naturales
+- `/sociales` Área de Ciencias Sociales
+- `/acerca` Información del proyecto
+
+---
+
 ## Componentes y funcionalidades
 
 1. **Sidebar.tsx**: Menú lateral con acordeón, permite agrupar ejercicios y ejemplos.
