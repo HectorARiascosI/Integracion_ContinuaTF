@@ -81,6 +81,13 @@ npm run preview
 npm test
 ```
 
+Atajos útiles:
+
+| Script         | Descripción                                     |
+|----------------|-------------------------------------------------|
+| `test:watch`   | Ejecuta Jest en modo observación                |
+| `test:ci`      | Ejecuta Jest en modo CI (sin watch, serial)     |
+
 * **Revisar tipos TypeScript**
 
 ```bash
