@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+/* Accesibilidad: estados de enfoque visibles para teclado */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+	outline: 2px solid #22c55e; /* emerald-500 */
+	outline-offset: 2px;
+}
