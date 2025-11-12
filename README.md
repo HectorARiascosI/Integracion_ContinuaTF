@@ -1,5 +1,7 @@
 # Clase UCC - Aplicativo React con Vite
 
+[![CI](https://github.com/HectorARiascosI/Integracion_ContinuaTF/actions/workflows/ci.yml/badge.svg)](https://github.com/HectorARiascosI/Integracion_ContinuaTF/actions/workflows/ci.yml)
+
 ## Descripción
 
 Este proyecto es un aplicativo desarrollado en **React con Vite** para aprender y aplicar **pruebas unitarias** con Jest más la integración continua con GitHub Actions.
@@ -40,6 +42,16 @@ npm run dev
 ```
 
 Abrir en el navegador la URL que muestre Vite (por defecto `http://localhost:5173`).
+
+---
+
+## Integración Continua (CI)
+
+Este proyecto integra **GitHub Actions** para ejecutar lint, type-check y pruebas en cada push y pull request hacia `main`.
+
+- Workflow: `.github/workflows/ci.yml`
+- Recomendado en CI: `npm run test:ci`
+- Objetivo: detectar fallos temprano y mantener la calidad del código
 
 ---
 
