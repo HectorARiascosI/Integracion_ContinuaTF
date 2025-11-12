@@ -8,6 +8,8 @@
 - Navegación SPA ≤ **500 ms**.
 - JMeter (Vercel): **promedio ≤ 5 s**, **p95 ≤ 6 s**, **errores = 0%**.
 - Bundle inicial ≤ **250 KB** gzip; assets críticos ≤ **2 MB**.
+ - Accesibilidad (Lighthouse) ≥ **90** en desktop.
+ - Cobertura de pruebas (líneas) ≥ **70%** en módulos con lógica.
 
 
-**Cómo se medirá:** Lighthouse (local y Vercel), JMeter sobre la URL pública, inspección de build (`dist/`).
+**Cómo se medirá:** Lighthouse (local y Vercel), JMeter sobre la URL pública, inspección de build (`dist/`), reporte de Jest (`coverage/`).
