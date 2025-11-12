@@ -11,7 +11,7 @@ const links = [
 
 export default function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b" aria-label="Navegación principal" data-testid="main-nav">
       <div className="max-w-6xl mx-auto flex gap-4 p-3">
         {links.map((l) => (
           <NavLink
@@ -20,6 +20,7 @@ export default function Navbar() {
             className={({ isActive }) =>
               `px-2 py-1 rounded ${isActive ? 'font-semibold underline' : 'hover:underline'}`
             }
+            aria-label={`Ir a ${l.label}`}
           >
             {l.label}
           </NavLink>
