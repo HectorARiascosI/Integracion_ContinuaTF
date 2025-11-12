@@ -12,7 +12,8 @@
     "format": "prettier --write .",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:ci": "jest --ci --runInBand"
+    "test:ci": "jest --ci --runInBand",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "framer-motion": "^12.23.12",
