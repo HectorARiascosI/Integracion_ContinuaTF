@@ -40,7 +40,6 @@ export default function PasswordValidator() {
           <ul className="space-y-1">
             {rules.map((rule, index) => {
               const valid = rule.test(password);
-              console.log(valid);
               return (
                 <li
                   key={index}

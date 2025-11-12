@@ -10,7 +10,6 @@ export default function MultiplicationTable() {
   const generateTable = () => {
     if (number === null || isNaN(number)) return;
     const result = Array.from({ length: TABLE_LENGTH }, (_, i) => (i + 1) * number);
-    console.log(result);
     setTable(result);
   };
 
