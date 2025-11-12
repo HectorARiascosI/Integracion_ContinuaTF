@@ -33,6 +33,14 @@ Instalar dependencias:
 npm install
 ```
 
+Iniciar entorno local:
+
+```bash
+npm run dev
+```
+
+Abrir en el navegador la URL que muestre Vite (por defecto `http://localhost:5173`).
+
 ---
 
 ## Scripts disponibles
