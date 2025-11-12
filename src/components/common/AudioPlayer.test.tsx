@@ -14,7 +14,6 @@ describe('AudioPlayer', () => {
 
   it('acepta una fuente opcional', () => {
     render(<AudioPlayer src="/audio/test.mp3" />);
-    const source = screen.getByRole('application', { hidden: true });
     // Fallback: verificar que el audio exista; validar source por selección DOM
     const audio = screen.getByTestId('audio-element') as HTMLAudioElement;
     expect(audio.querySelector('source')?.getAttribute('src')).toBe('/audio/test.mp3');
