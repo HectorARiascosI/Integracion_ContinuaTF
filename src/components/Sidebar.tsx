@@ -51,22 +51,28 @@ export default function Sidebar() {
           onClick={() => setOpenMain(!openMain)}
           className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 
                      hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+          aria-expanded={openMain}
+          aria-controls="sidebar-main-items"
+          aria-label="Alternar menú principal"
         >
           Menú Principal
           <span>{openMain ? "▲" : "▼"}</span>
         </button>
-        {openMain && <div className="pl-4 space-y-1">{mainItems.map(renderNavItem)}</div>}
+        {openMain && <div id="sidebar-main-items" className="pl-4 space-y-1">{mainItems.map(renderNavItem)}</div>}
 
         {/* Acordeón Exercises */}
         <button
           onClick={() => setOpenExercises(!openExercises)}
           className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 
                      hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+          aria-expanded={openExercises}
+          aria-controls="sidebar-exercise-items"
+          aria-label="Alternar menú de ejercicios"
         >
           Ejercicios - Jtest
           <span>{openExercises ? "▲" : "▼"}</span>
         </button>
-        {openExercises && <div className="pl-4 space-y-1">{exerciseItems.map(renderNavItem)}</div>}
+        {openExercises && <div id="sidebar-exercise-items" className="pl-4 space-y-1">{exerciseItems.map(renderNavItem)}</div>}
 
       </div>
     </aside>

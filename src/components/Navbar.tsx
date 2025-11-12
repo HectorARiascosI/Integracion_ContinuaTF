@@ -38,6 +38,7 @@ const Navbar: React.FC = () => {
           <button
             type="button"
             onClick={toggleTheme}
+            aria-label="Alternar tema claro/oscuro"
             className="px-3 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 hover:opacity-90 transition"
           >
             Tema
