@@ -88,6 +88,16 @@ Atajos útiles:
 | `test:watch`   | Ejecuta Jest en modo observación                |
 | `test:ci`      | Ejecuta Jest en modo CI (sin watch, serial)     |
 
+---
+
+## Cobertura de pruebas
+
+Generar reporte de cobertura en `coverage/`:
+
+```bash
+npm run test:coverage
+```
+
 * **Revisar tipos TypeScript**
 
 ```bash
