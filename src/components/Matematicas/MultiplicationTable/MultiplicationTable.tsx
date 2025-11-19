@@ -14,10 +14,12 @@ const MultiplicationTable: React.FC = () => {
   const [score, setScore] = useState<number>(0);
   const [totalAnswered, setTotalAnswered] = useState<number>(0);
   const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [randomMode, setRandomMode] = useState<boolean>(false);
+  const [stars, setStars] = useState<number>(0);
 
   // Generar ecuaciones para una tabla
   const generateEquations = (table: number): EquationState[] => {
-    return Array.from({ length: 10 }, (_, i) => {
+    const base = Array.from({ length: 10 }, (_, i) => {
       const multiplier = i + 1;
       return {
         equation: `${table} × ${multiplier}`,
@@ -25,8 +27,15 @@ const MultiplicationTable: React.FC = () => {
         userAnswer: '',
         isCorrect: null,
         showResult: false,
-      };
+      } as EquationState;
     });
+    if (!randomMode) return base;
+    // shuffle
+    for (let i = base.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [base[i], base[j]] = [base[j], base[i]];
+    }
+    return base;
   };
 
   // Iniciar práctica
@@ -53,6 +62,8 @@ const MultiplicationTable: React.FC = () => {
 
     if (isCorrect) {
       setScore((prev) => prev + 1);
+      // award stars for quick correct answers (simple rule)
+      setStars((s) => Math.min(3, s + 1));
     } else {
       // Mostrar respuesta correcta después de 2 segundos
       setTimeout(() => {
@@ -155,26 +166,38 @@ const MultiplicationTable: React.FC = () => {
           // Pantalla de práctica
           <div>
             {/* Encabezado con puntuación */}
-            <div className="flex justify-between items-center mb-8 p-4 bg-indigo-50 rounded-xl">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-8 p-4 bg-indigo-50 rounded-xl gap-3">
               <h2 className="text-2xl font-bold text-indigo-700">
                 Tabla del {selectedTable}
               </h2>
-              <div className="text-right">
-                <p className="text-lg font-semibold text-gray-700">
-                  Puntuación: <span className="text-green-600">{score}</span> /{' '}
-                  {totalAnswered}
-                </p>
-                {totalAnswered === 10 && (
-                  <p className="text-lg font-bold text-indigo-600 mt-1">
-                    {score >= 8
-                      ? '🏆 ¡Excelente!'
-                      : score >= 6
-                        ? '👍 ¡Bien hecho!'
-                        : '💪 ¡Sigue practicando!'}
-                  </p>
-                )}
-              </div>
+                  <div className="text-right">
+                    <div className="flex items-center gap-4 justify-end">
+                      <div className="text-lg font-semibold text-gray-700">Puntos: <span className="text-green-600">{score}</span></div>
+                      <div className="text-lg font-semibold text-gray-700">Respuestas: {totalAnswered}</div>
+                      <div className="flex items-center gap-1" aria-hidden>
+                        {Array.from({ length: stars }).map((_, i) => (
+                          <span key={i} className="text-yellow-400 text-2xl">⭐</span>
+                        ))}
+                      </div>
+                    </div>
+                    {totalAnswered === 10 && (
+                      <p className="text-lg font-bold text-indigo-600 mt-1">
+                        {score >= 8
+                          ? '🏆 ¡Excelente!'
+                          : score >= 6
+                            ? '👍 ¡Bien hecho!'
+                            : '💪 ¡Sigue practicando!'}
+                      </p>
+                    )}
+                  </div>
             </div>
+
+                <div className="mb-4 flex items-center gap-3">
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox" checked={randomMode} onChange={(e) => setRandomMode(e.target.checked)} />
+                    <span className="text-sm">Modo aleatorio</span>
+                  </label>
+                </div>
 
             {/* Ecuaciones */}
             <div className="space-y-4 mb-8">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import KidHelper from '../../common/KidHelper';
 
 interface ColorValues {
   red: number;
@@ -27,6 +28,34 @@ const ColorMixer: React.FC = () => {
       g: Math.min(255, y + b * 0.3),
       b: Math.min(255, b + r * 0.2),
     };
+  };
+
+  // Challenge (reto) mode: target color to approximate
+  const [challengeMode, setChallengeMode] = useState(false);
+  const [targetColor, setTargetColor] = useState<{ r: number; g: number; b: number } | null>(null);
+
+  const distanceToTarget = () => {
+    if (!targetColor) return 100;
+    const m = getMixedColor();
+    const dr = m.r - targetColor.r;
+    const dg = m.g - targetColor.g;
+    const db = m.b - targetColor.b;
+    // simple Euclidean distance normalized to 0-100
+    const maxDist = Math.sqrt(255 * 255 * 3);
+    const dist = Math.sqrt(dr * dr + dg * dg + db * db);
+    return Math.max(0, Math.round((1 - dist / maxDist) * 100));
+  };
+
+  const startChallenge = () => {
+    // generate a visible target color
+    const pick = () => ({ r: Math.floor(Math.random() * 256), g: Math.floor(Math.random() * 256), b: Math.floor(Math.random() * 256) });
+    setTargetColor(pick());
+    setChallengeMode(true);
+  };
+
+  const stopChallenge = () => {
+    setTargetColor(null);
+    setChallengeMode(false);
   };
 
   // Actualizar canvas con el color mezclado
@@ -85,8 +114,8 @@ const ColorMixer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-8">
+    <div className="min-h-screen bg-gradient-to-br from-kid-purple/20 to-kid-yellow/10 p-8">
+      <div className="max-w-4xl mx-auto bg-white rounded-xxl shadow-2xl p-8">
         {/* Título */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-purple-600 mb-2">
@@ -98,14 +127,34 @@ const ColorMixer: React.FC = () => {
         </div>
 
         {/* Canvas de color mezclado */}
-        <div className="flex justify-center mb-8">
-          <canvas
-            ref={canvasRef}
-            width={300}
-            height={300}
-            className="border-4 border-gray-300 rounded-2xl shadow-lg"
-            data-testid="color-canvas"
-          />
+        <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+          <div className="flex-shrink-0">
+            <canvas
+              ref={canvasRef}
+              width={300}
+              height={300}
+              className={`border-4 border-gray-300 rounded-2xl shadow-lg transition-transform duration-300 ${challengeMode ? 'scale-105 ring-4 ring-kid-blue/30' : ''}`}
+              data-testid="color-canvas"
+              aria-label="Lienzo del color mezclado"
+            />
+          </div>
+
+          <div className="flex-1 space-y-3">
+            <div className="flex items-start gap-3">
+              <KidHelper name="Pinta" message={challengeMode ? '¡Acércate al color objetivo!' : 'Mueve los controles y mira el color'} />
+            </div>
+
+            {/* Target preview when in challenge */}
+            {challengeMode && targetColor && (
+              <div className="flex items-center gap-3">
+                <div className="w-16 h-16 rounded-full shadow-md" style={{ background: `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})` }} aria-hidden />
+                <div>
+                  <div className="text-sm text-gray-700">Color objetivo</div>
+                  <div className="text-lg font-bold">{`#${((1<<24) + (targetColor.r<<16) + (targetColor.g<<8) + targetColor.b).toString(16).slice(1).toUpperCase()}`}</div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Información del color */}
@@ -115,6 +164,24 @@ const ColorMixer: React.FC = () => {
             RGB: ({Math.round(getMixedColor().r)}, {Math.round(getMixedColor().g)},{' '}
             {Math.round(getMixedColor().b)})
           </p>
+        </div>
+
+        {/* Challenge controls */}
+        <div className="flex items-center gap-3 mb-6">
+          {!challengeMode ? (
+            <button onClick={startChallenge} className="bg-kid-blue text-white py-2 px-4 rounded-xl">🎯 Iniciar Reto</button>
+          ) : (
+            <>
+              <div className="flex-1">
+                <div className="text-sm text-gray-700">Progreso</div>
+                <div className="w-full bg-gray-200 rounded-full h-3 mt-1">
+                  <div className="bg-green-400 h-3 rounded-full transition-all" style={{ width: `${distanceToTarget()}%` }} />
+                </div>
+              </div>
+              <div className="text-sm font-bold">{distanceToTarget()}%</div>
+              <button onClick={stopChallenge} className="bg-gray-400 text-white py-2 px-4 rounded-xl">Detener</button>
+            </>
+          )}
         </div>
 
         {/* Controles de colores */}
@@ -172,7 +239,7 @@ const ColorMixer: React.FC = () => {
         </div>
 
         {/* Botones de presets */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <button
             onClick={() => applyPreset('green')}
             className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"

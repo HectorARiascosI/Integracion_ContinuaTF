@@ -52,6 +52,16 @@ const WaterCycle: React.FC = () => {
   const [activeStage, setActiveStage] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentPlayIndex, setCurrentPlayIndex] = useState<number>(0);
+  // Mini-quiz state
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState<Record<number, string>>({});
+  const [quizResult, setQuizResult] = useState<number | null>(null);
+
+  const quizQuestions = [
+    { q: '¿El vapor de agua forma nubes?', options: ['Verdadero', 'Falso'], a: 'Verdadero' },
+    { q: '¿La precipitación puede ser nieve?', options: ['Sí', 'No'], a: 'Sí' },
+    { q: '¿El agua desaparece para siempre?', options: ['No', 'Sí'], a: 'No' }
+  ];
 
   // Reproducción automática del ciclo
   useEffect(() => {
@@ -94,6 +104,14 @@ const WaterCycle: React.FC = () => {
     if (!isPlaying) {
       setActiveStage(stageId);
     }
+  };
+
+  const submitQuiz = () => {
+    let correct = 0;
+    quizQuestions.forEach((qq, i) => {
+      if (quizAnswers[i] === qq.a) correct++;
+    });
+    setQuizResult(correct);
   };
 
   // Obtener información de la etapa activa
@@ -231,6 +249,38 @@ const WaterCycle: React.FC = () => {
                   </p>
                 </div>
               )}
+
+              {/* Mini-quiz panel */}
+              <div className="mt-6">
+                {!quizOpen ? (
+                  <button onClick={() => setQuizOpen(true)} className="w-full bg-indigo-600 text-white py-3 rounded-xl">📋 Mini-quiz (3 preguntas)</button>
+                ) : (
+                  <div className="mt-4 space-y-3">
+                    {quizQuestions.map((qq, i) => (
+                      <div key={i} className="bg-gray-50 p-3 rounded-xl">
+                        <div className="font-bold">{i + 1}. {qq.q}</div>
+                        <div className="mt-2 flex gap-2">
+                          {qq.options.map((opt) => (
+                            <button key={opt} onClick={() => setQuizAnswers((s) => ({ ...s, [i]: opt }))} className={`px-3 py-1 rounded-lg ${quizAnswers[i] === opt ? 'bg-indigo-500 text-white' : 'bg-white border'}`}>{opt}</button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+
+                    <div className="flex gap-2">
+                      <button onClick={submitQuiz} className="bg-green-500 text-white py-2 px-4 rounded-xl">Enviar</button>
+                      <button onClick={() => { setQuizOpen(false); setQuizResult(null); setQuizAnswers({}); }} className="bg-gray-300 py-2 px-4 rounded-xl">Cerrar</button>
+                    </div>
+
+                    {quizResult !== null && (
+                      <div className="mt-4 p-3 rounded-xl bg-white border">
+                        <div className="font-bold">Resultado: {quizResult} / {quizQuestions.length}</div>
+                        <div className="text-sm text-gray-700">{quizResult === quizQuestions.length ? '¡Perfecto!' : 'Buen intento, repasa las etapas y vuelve a intentar.'}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
