@@ -1,116 +1,266 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-/* Accesibilidad: estados de enfoque visibles para teclado */
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-	outline: 2px solid #22c55e; /* emerald-500 */
-	outline-offset: 2px;
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Kid-friendly vibrant color palette */
+  --background: oklch(0.95 0.02 200);
+  --foreground: oklch(0.15 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  
+  /* Vibrant primary colors for kids */
+  --primary: oklch(0.65 0.25 280);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.72 0.2 50);
+  --secondary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.68 0.22 140);
+  --accent-foreground: oklch(0.99 0 0);
+  
+  /* Kid-friendly color variants */
+  --success: oklch(0.68 0.25 140);
+  --warning: oklch(0.72 0.2 50);
+  --danger: oklch(0.62 0.25 20);
+  --info: oklch(0.65 0.22 260);
+  
+  --border: oklch(0.85 0.02 200);
+  --input: oklch(0.92 0.01 200);
+  --ring: oklch(0.65 0.25 280);
+  --radius: 1.5rem;
 }
 
-/* Custom helpers and kid-friendly animations */
-.rounded-xxl { border-radius: 1.25rem; }
-
-@keyframes colorPulse {
-	0% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
-	40% { transform: scale(1.06); filter: drop-shadow(0 10px 24px rgba(139,92,246,0.18)); }
-	100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+.dark {
+  --background: oklch(0.15 0.02 200);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.2 0.02 200);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.15 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.75 0.25 280);
+  --primary-foreground: oklch(0.15 0 0);
+  --secondary: oklch(0.82 0.2 50);
+  --secondary-foreground: oklch(0.15 0 0);
+  --accent: oklch(0.78 0.22 140);
+  --accent-foreground: oklch(0.15 0 0);
+  --success: oklch(0.78 0.25 140);
+  --warning: oklch(0.82 0.2 50);
+  --danger: oklch(0.72 0.25 20);
+  --info: oklch(0.75 0.22 260);
+  --border: oklch(0.3 0.02 200);
+  --input: oklch(0.25 0.01 200);
+  --ring: oklch(0.75 0.25 280);
 }
 
-.animate-color-pulse { animation: colorPulse 700ms ease-in-out; }
-
-/* Fancy slider thumbs for big touch targets */
-input[type=range] { -webkit-appearance: none; appearance: none; }
-input[type=range]:focus { outline: none; }
-input[type=range]::-webkit-slider-runnable-track { height: 10px; border-radius: 999px; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 999px; margin-top: -9px; box-shadow: 0 6px 18px rgba(16,24,40,0.12); }
-input[type=range].slider-red::-webkit-slider-thumb { background: linear-gradient(180deg,#ff7b7b,#ff3b3b); }
-input[type=range].slider-red::-moz-range-thumb { background: linear-gradient(180deg,#ff7b7b,#ff3b3b); }
-input[type=range].slider-blue::-webkit-slider-thumb { background: linear-gradient(180deg,#7fb7ff,#2b8cff); }
-input[type=range].slider-yellow::-webkit-slider-thumb { background: linear-gradient(180deg,#ffe48f,#ffc500); }
-
-/* make the small helper card avatar round and big */
-.kid-avatar { width: 64px; height: 64px; border-radius: 999px; display:inline-flex; align-items:center; justify-content:center; font-size:28px; }
-
-/* Accessible minimum font-size for kid UI */
-body { font-size: 16px; }
-
-/* Screen-reader only helper */
-.sr-only {
-	position: absolute !important;
-	width: 1px !important;
-	height: 1px !important;
-	padding: 0 !important;
-	margin: -1px !important;
-	overflow: hidden !important;
-	clip: rect(0, 0, 0, 0) !important;
-	white-space: nowrap !important;
-	border: 0 !important;
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-full: 9999px;
 }
 
-/* Multiplication module animations */
-@keyframes confettiFall {
-	0% { transform: translateY(-10vh) rotate(0deg) scale(1); opacity: 1; }
-	100% { transform: translateY(120vh) rotate(360deg) scale(0.9); opacity: 0.9; }
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-.confetti-piece {
-	position: absolute;
-	width: 12px;
-	height: 18px;
-	opacity: 0.95;
-	will-change: transform, opacity;
-	animation: confettiFall 1200ms linear forwards;
-	pointer-events: none;
+/* Playful kid-friendly animations */
+@layer utilities {
+  @keyframes bounce-gentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+    50% { box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+  }
+  
+  @keyframes rotate-playful {
+    0% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+    100% { transform: rotate(-3deg); }
+  }
+  
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    20%, 50% { transform: scale(1.15); }
+  }
+  
+  @keyframes confetti-fall {
+    to {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+  
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+  
+  /* Enhanced RGB Bubble animations for Color Mixer */
+  @keyframes bubble-float-red {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(-15px) translateX(-8px) rotate(-5deg); }
+    50% { transform: translateY(-25px) translateX(0px) rotate(0deg); }
+    75% { transform: translateY(-15px) translateX(8px) rotate(5deg); }
+  }
+  
+  @keyframes bubble-float-green {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(-12px) translateX(10px) rotate(3deg); }
+    50% { transform: translateY(-20px) translateX(0px) rotate(0deg); }
+    75% { transform: translateY(-12px) translateX(-10px) rotate(-3deg); }
+  }
+  
+  @keyframes bubble-float-blue {
+    0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    25% { transform: translateY(-18px) translateX(-10px) rotate(4deg); }
+    50% { transform: translateY(-28px) translateX(0px) rotate(0deg); }
+    75% { transform: translateY(-18px) translateX(10px) rotate(-4deg); }
+  }
+  
+  @keyframes color-dilute {
+    0% { filter: brightness(1) saturate(1); }
+    50% { filter: brightness(1.2) saturate(0.8); }
+    100% { filter: brightness(1) saturate(1); }
+  }
+  
+  /* Water Cycle SVG animations */
+  @keyframes rain-fall {
+    0% { transform: translateY(-30px); opacity: 1; }
+    100% { transform: translateY(150px); opacity: 0; }
+  }
+  
+  @keyframes vapor-rise {
+    0% { transform: translateY(0px); opacity: 0.3; }
+    100% { transform: translateY(-200px); opacity: 0; }
+  }
+  
+  @keyframes cloud-drift {
+    0%, 100% { transform: translateX(0px); }
+    50% { transform: translateX(30px); }
+  }
+  
+  @keyframes spin-sun {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Utility classes */
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+  
+  .animate-rotate-playful {
+    animation: rotate-playful 0.6s infinite;
+  }
+  
+  .animate-slide-up {
+    animation: slide-up 0.5s ease-out;
+  }
+  
+  .animate-heartbeat {
+    animation: heartbeat 0.6s ease-in-out;
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-wiggle {
+    animation: wiggle 0.3s ease-in-out;
+  }
+  
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  /* RGB Bubble utility classes */
+  .animate-bubble-red {
+    animation: bubble-float-red 3.5s ease-in-out infinite;
+  }
+  
+  .animate-bubble-green {
+    animation: bubble-float-green 3.5s ease-in-out infinite;
+  }
+  
+  .animate-bubble-blue {
+    animation: bubble-float-blue 3.5s ease-in-out infinite;
+  }
+  
+  .animate-color-dilute {
+    animation: color-dilute 0.5s ease-in-out;
+  }
+  
+  /* Water Cycle utility classes */
+  .animate-rain-fall {
+    animation: rain-fall 0.6s ease-in infinite;
+  }
+  
+  .animate-vapor-rise {
+    animation: vapor-rise 2.5s ease-in infinite;
+  }
+  
+  .animate-cloud-drift {
+    animation: cloud-drift 8s ease-in-out infinite;
+  }
+  
+  .animate-spin-sun {
+    animation: spin-sun 20s linear infinite;
+  }
 }
-
-@keyframes shakeX {
-	0% { transform: translateX(0); }
-	20% { transform: translateX(-6px) rotate(-2deg); }
-	40% { transform: translateX(6px) rotate(2deg); }
-	60% { transform: translateX(-4px) rotate(-1deg); }
-	80% { transform: translateX(4px) rotate(1deg); }
-	100% { transform: translateX(0); }
-}
-.animate-shake { animation: shakeX 480ms ease-in-out; }
-
-/* Progress bar */
-.kid-progress { height: 18px; background: linear-gradient(90deg,#e5e7eb,#f8fafc); border-radius: 999px; overflow: hidden; }
-.kid-progress > .fill { height: 100%; background: linear-gradient(90deg,#60a5fa,#7c3aed); transition: width 500ms ease; }
-
-/* Big colorful action buttons for kid UI */
-.kid-btn { border-radius: 14px; padding: 12px 20px; font-weight: 700; font-size: 18px; box-shadow: 0 8px 24px rgba(99,102,241,0.12); }
-.kid-btn:focus { outline: 3px solid rgba(124,58,237,0.24); }
-
-/* Water cycle animations and styles */
-@keyframes floatY {
-	0% { transform: translateY(0); }
-	50% { transform: translateY(-8px); }
-	100% { transform: translateY(0); }
-}
-
-@keyframes dropBounce {
-	0% { transform: translateY(-6px) scale(0.95); opacity: 0.9 }
-	60% { transform: translateY(8px) scale(1.05); opacity: 1 }
-	100% { transform: translateY(0) scale(1); opacity: 0.95 }
-}
-
-.float-slow { animation: floatY 4s ease-in-out infinite; }
-.float-fast { animation: floatY 2.6s ease-in-out infinite; }
-.drop-bounce { animation: dropBounce 900ms cubic-bezier(.2,.9,.3,1) both; }
-
-.water-stage-btn { transition: transform 300ms ease, box-shadow 300ms ease; }
-.water-stage-btn:focus { outline: 3px solid rgba(59,130,246,0.24); }
-.water-stage-btn.active { transform: scale(1.28); box-shadow: 0 18px 40px rgba(59,130,246,0.18); }
-
-.water-panel { background: linear-gradient(180deg,#ffffff,#f8fafc); border-radius: 18px; }
-
-.play-button-with-progress { position: relative; overflow: hidden; }
-.play-progress { position: absolute; left: 0; bottom: 0; height: 6px; background: linear-gradient(90deg,#60a5fa,#34d399); width: 0%; transition: width 600ms linear; }
-
-.quiz-feedback { padding: 14px; border-radius: 12px; font-weight: 700; display:flex; align-items:center; gap:12px; justify-content:center; }
-.quiz-feedback.good { background: linear-gradient(90deg,#fef3c7,#d9f99d); color: #065f46; }
-.quiz-feedback.bad { background: linear-gradient(90deg,#e0f2fe,#fee2e2); color: #7f1d1d; }
-
