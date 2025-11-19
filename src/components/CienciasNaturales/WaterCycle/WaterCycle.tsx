@@ -106,6 +106,14 @@ const WaterCycle: React.FC = () => {
     }
   };
 
+  // keyboard activation (Enter/Space)
+  const handleStageKey = (e: React.KeyboardEvent, stageId: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      selectStage(stageId);
+    }
+  };
+
   const submitQuiz = () => {
     let correct = 0;
     quizQuestions.forEach((qq, i) => {
@@ -137,22 +145,26 @@ const WaterCycle: React.FC = () => {
           <div className="lg:col-span-2 bg-white rounded-3xl shadow-2xl p-8">
             {/* Controles */}
             <div className="flex justify-center gap-4 mb-8">
-              <button
-                onClick={startPlayback}
-                disabled={isPlaying}
-                className="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"
-                data-testid="play-button"
-              >
-                ▶️ Reproducir Ciclo
-              </button>
-              <button
-                onClick={stopPlayback}
-                disabled={!isPlaying}
-                className="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"
-                data-testid="stop-button"
-              >
-                ⏸️ Detener
-              </button>
+              <div className="relative">
+                <button
+                  onClick={startPlayback}
+                  disabled={isPlaying}
+                  className={`play-button-with-progress bg-kid-blue text-white py-3 px-6 rounded-xl kid-btn ${isPlaying ? 'opacity-80' : ''}`}
+                  data-testid="play-button"
+                  aria-pressed={isPlaying}
+                >
+                  ▶️ Reproducir Ciclo
+                  <div className="play-progress" style={{ width: `${((currentPlayIndex + 1) / stages.length) * 100}%` }} aria-hidden />
+                </button>
+                <button
+                  onClick={stopPlayback}
+                  disabled={!isPlaying}
+                  className="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 ml-4"
+                  data-testid="stop-button"
+                >
+                  ⏸️ Detener
+                </button>
+              </div>
             </div>
 
             {/* Diagrama SVG simulado */}
@@ -166,12 +178,15 @@ const WaterCycle: React.FC = () => {
                 <button
                   key={stage.id}
                   onClick={() => selectStage(stage.id)}
+                  onKeyDown={(e) => handleStageKey(e, stage.id)}
                   disabled={isPlaying}
-                  className={`absolute w-16 h-16 rounded-full flex items-center justify-center text-3xl transition-all transform hover:scale-110 ${
+                  aria-pressed={activeStage === stage.id}
+                  tabIndex={0}
+                  className={`absolute water-stage-btn w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
                     activeStage === stage.id
-                      ? 'bg-yellow-300 ring-4 ring-yellow-400 scale-125'
+                      ? 'active bg-yellow-300 ring-4 ring-yellow-400 scale-125'
                       : 'bg-white shadow-lg hover:shadow-xl'
-                  } ${isPlaying ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                  } ${isPlaying ? 'cursor-not-allowed' : 'cursor-pointer'} ${stage.id === 'evaporation' ? 'float-fast' : stage.id === 'condensation' ? 'float-slow' : ''}`}
                   style={{
                     top: stage.position.top,
                     left: stage.position.left,
@@ -180,7 +195,7 @@ const WaterCycle: React.FC = () => {
                   data-testid={`stage-button-${stage.id}`}
                   title={stage.title}
                 >
-                  {stage.emoji}
+                  <span aria-hidden className={stage.id === 'precipitation' ? 'drop-bounce' : ''}>{stage.emoji}</span>
                 </button>
               ))}
 
@@ -213,13 +228,13 @@ const WaterCycle: React.FC = () => {
 
           {/* Panel de información */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-3xl shadow-2xl p-6 sticky top-8">
+            <div className="bg-white rounded-3xl shadow-2xl p-6 sticky top-8 water-panel">
               {activeStage ? (
                 <div data-testid="stage-info">
-                  <div className="text-6xl text-center mb-4">
-                    {getActiveStageInfo()?.emoji}
+                  <div className="text-7xl text-center mb-4">
+                    <span className="inline-block transform transition-transform duration-300 scale-100" aria-hidden>{getActiveStageInfo()?.emoji}</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-blue-600 mb-4 text-center">
+                  <h2 className="text-2xl font-extrabold text-blue-700 mb-4 text-center">
                     {getActiveStageInfo()?.title}
                   </h2>
                   <div className="space-y-4">
@@ -253,7 +268,7 @@ const WaterCycle: React.FC = () => {
               {/* Mini-quiz panel */}
               <div className="mt-6">
                 {!quizOpen ? (
-                  <button onClick={() => setQuizOpen(true)} className="w-full bg-indigo-600 text-white py-3 rounded-xl">📋 Mini-quiz (3 preguntas)</button>
+                  <button onClick={() => setQuizOpen(true)} className="w-full kid-btn bg-kid-purple text-white">📋 Mini-quiz (3 preguntas)</button>
                 ) : (
                   <div className="mt-4 space-y-3">
                     {quizQuestions.map((qq, i) => (
@@ -273,9 +288,9 @@ const WaterCycle: React.FC = () => {
                     </div>
 
                     {quizResult !== null && (
-                      <div className="mt-4 p-3 rounded-xl bg-white border">
-                        <div className="font-bold">Resultado: {quizResult} / {quizQuestions.length}</div>
-                        <div className="text-sm text-gray-700">{quizResult === quizQuestions.length ? '¡Perfecto!' : 'Buen intento, repasa las etapas y vuelve a intentar.'}</div>
+                      <div className={`mt-4 p-3 rounded-xl bg-white border quiz-feedback ${quizResult === quizQuestions.length ? 'good' : 'bad'}`} role="status" aria-live="polite">
+                        <div className="text-xl">{quizResult === quizQuestions.length ? '🌟 ¡Excelente!' : '🌧️ Sigue intentando'}</div>
+                        <div className="text-sm">Resultado: {quizResult} / {quizQuestions.length}</div>
                       </div>
                     )}
                   </div>

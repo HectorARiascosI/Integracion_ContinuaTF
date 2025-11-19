@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.07% </span>
+                <span class="strong">62.29% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>37/56</span>
+                <span class='fraction'>38/61</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60.6% </span>
+                <span class="strong">59.57% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>20/33</span>
+                <span class='fraction'>28/47</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.17% </span>
+                <span class="strong">48% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>12/23</span>
+                <span class='fraction'>12/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.83% </span>
+                <span class="strong">66.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>34/48</span>
+                <span class='fraction'>35/53</span>
             </div>
         
             
@@ -402,7 +402,22 @@
 <a name='L337'></a><a href='#L337'>337</a>
 <a name='L338'></a><a href='#L338'>338</a>
 <a name='L339'></a><a href='#L339'>339</a>
-<a name='L340'></a><a href='#L340'>340</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L340'></a><a href='#L340'>340</a>
+<a name='L341'></a><a href='#L341'>341</a>
+<a name='L342'></a><a href='#L342'>342</a>
+<a name='L343'></a><a href='#L343'>343</a>
+<a name='L344'></a><a href='#L344'>344</a>
+<a name='L345'></a><a href='#L345'>345</a>
+<a name='L346'></a><a href='#L346'>346</a>
+<a name='L347'></a><a href='#L347'>347</a>
+<a name='L348'></a><a href='#L348'>348</a>
+<a name='L349'></a><a href='#L349'>349</a>
+<a name='L350'></a><a href='#L350'>350</a>
+<a name='L351'></a><a href='#L351'>351</a>
+<a name='L352'></a><a href='#L352'>352</a>
+<a name='L353'></a><a href='#L353'>353</a>
+<a name='L354'></a><a href='#L354'>354</a>
+<a name='L355'></a><a href='#L355'>355</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -507,6 +522,14 @@
 <span class="cline-any cline-yes">45x</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -567,9 +590,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">180x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -849,6 +879,14 @@ const WaterCycle: React.FC = () =&gt; {
     }
   };
 &nbsp;
+  // keyboard activation (Enter/Space)
+  const handleStageKey = <span class="fstat-no" title="function not covered" >(e</span>: React.KeyboardEvent, stageId: string) =&gt; {
+<span class="cstat-no" title="statement not covered" >    if (e.key === 'Enter' || e.key === ' ') {</span>
+<span class="cstat-no" title="statement not covered" >      e.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >      selectStage(stageId);</span>
+    }
+  };
+&nbsp;
   const submitQuiz = <span class="fstat-no" title="function not covered" >() =</span>&gt; {
     let correct = <span class="cstat-no" title="statement not covered" >0;</span>
 <span class="cstat-no" title="statement not covered" >    quizQuestions.forEach(<span class="fstat-no" title="function not covered" >(q</span>q, i) =&gt; {</span>
@@ -880,22 +918,26 @@ const WaterCycle: React.FC = () =&gt; {
           &lt;div className="lg:col-span-2 bg-white rounded-3xl shadow-2xl p-8"&gt;
             {/* Controles */}
             &lt;div className="flex justify-center gap-4 mb-8"&gt;
-              &lt;button
-                onClick={startPlayback}
-                disabled={isPlaying}
-                className="bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"
-                data-testid="play-button"
-              &gt;
-                ▶️ Reproducir Ciclo
-              &lt;/button&gt;
-              &lt;button
-                onClick={stopPlayback}
-                disabled={!isPlaying}
-                className="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105"
-                data-testid="stop-button"
-              &gt;
-                ⏸️ Detener
-              &lt;/button&gt;
+              &lt;div className="relative"&gt;
+                &lt;button
+                  onClick={startPlayback}
+                  disabled={isPlaying}
+                  className={`play-button-with-progress bg-kid-blue text-white py-3 px-6 rounded-xl kid-btn ${isPlaying ? 'opacity-80' : ''}`}
+                  data-testid="play-button"
+                  aria-pressed={isPlaying}
+                &gt;
+                  ▶️ Reproducir Ciclo
+                  &lt;div className="play-progress" style={{ width: `${((currentPlayIndex + 1) / stages.length) * 100}%` }} aria-hidden /&gt;
+                &lt;/button&gt;
+                &lt;button
+                  onClick={stopPlayback}
+                  disabled={!isPlaying}
+                  className="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 ml-4"
+                  data-testid="stop-button"
+                &gt;
+                  ⏸️ Detener
+                &lt;/button&gt;
+              &lt;/div&gt;
             &lt;/div&gt;
 &nbsp;
             {/* Diagrama SVG simulado */}
@@ -905,16 +947,19 @@ const WaterCycle: React.FC = () =&gt; {
               &lt;div className="absolute top-10 right-10 w-20 h-20 bg-yellow-300 rounded-full opacity-60"&gt;&lt;/div&gt;
 &nbsp;
               {/* Puntos de etapas */}
-              {stages.map((stage) =&gt; (
+              {stages.map((stage, i) =&gt; (
                 &lt;button
                   key={stage.id}
                   onClick={() =&gt; selectStage(stage.id)}
+                  onKeyDown={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >handleStageKey(e, stage.id)}</span>
                   disabled={isPlaying}
-                  className={`absolute w-16 h-16 rounded-full flex items-center justify-center text-3xl transition-all transform hover:scale-110 ${
+                  aria-pressed={activeStage === stage.id}
+                  tabIndex={0}
+                  className={`absolute water-stage-btn w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
                     activeStage === stage.id
-                      ? 'bg-yellow-300 ring-4 ring-yellow-400 scale-125'
-                      : 'bg-white shadow-lg hover:shadow-xl'
-                  } ${isPlaying ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                      ? 'active'
+                      : ''
+                  } ${isPlaying ? 'cursor-not-allowed' : 'cursor-pointer'} ${stage.id === 'evaporation' ? 'float-fast' : stage.id === 'condensation' ? 'float-slow' : ''}`}
                   style={{
                     top: stage.position.top,
                     left: stage.position.left,
@@ -923,7 +968,7 @@ const WaterCycle: React.FC = () =&gt; {
                   data-testid={`stage-button-${stage.id}`}
                   title={stage.title}
                 &gt;
-                  {stage.emoji}
+                  &lt;span aria-hidden className={stage.id === 'precipitation' ? 'drop-bounce' : ''}&gt;{stage.emoji}&lt;/span&gt;
                 &lt;/button&gt;
               ))}
 &nbsp;
@@ -956,13 +1001,13 @@ const WaterCycle: React.FC = () =&gt; {
 &nbsp;
           {/* Panel de información */}
           &lt;div className="lg:col-span-1"&gt;
-            &lt;div className="bg-white rounded-3xl shadow-2xl p-6 sticky top-8"&gt;
+            &lt;div className="bg-white rounded-3xl shadow-2xl p-6 sticky top-8 water-panel"&gt;
               {activeStage ? (
                 &lt;div data-testid="stage-info"&gt;
-                  &lt;div className="text-6xl text-center mb-4"&gt;
-                    {getActiveStageInfo()?.emoji}
+                  &lt;div className="text-7xl text-center mb-4"&gt;
+                    &lt;span className="inline-block transform transition-transform duration-300 scale-100" aria-hidden&gt;{getActiveStageInfo()?.emoji}&lt;/span&gt;
                   &lt;/div&gt;
-                  &lt;h2 className="text-2xl font-bold text-blue-600 mb-4 text-center"&gt;
+                  &lt;h2 className="text-2xl font-extrabold text-blue-700 mb-4 text-center"&gt;
                     {getActiveStageInfo()?.title}
                   &lt;/h2&gt;
                   &lt;div className="space-y-4"&gt;
@@ -996,7 +1041,7 @@ const WaterCycle: React.FC = () =&gt; {
               {/* Mini-quiz panel */}
               &lt;div className="mt-6"&gt;
                 {!quizOpen ? (
-                  &lt;button onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setQuizOpen(true)}</span> className="w-full bg-indigo-600 text-white py-3 rounded-xl"&gt;📋 Mini-quiz (3 preguntas)&lt;/button&gt;
+                  &lt;button onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >setQuizOpen(true)}</span> className="w-full kid-btn bg-kid-purple text-white"&gt;📋 Mini-quiz (3 preguntas)&lt;/button&gt;
                 ) : (
 <span class="branch-1 cbranch-no" title="branch not covered" >                  &lt;div className="mt-4 space-y-3"&gt;</span>
                     {quizQuestions.map(<span class="fstat-no" title="function not covered" >(q</span>q, i) =&gt; (
@@ -1016,9 +1061,9 @@ const WaterCycle: React.FC = () =&gt; {
                     &lt;/div&gt;
 &nbsp;
                     {quizResult !== null &amp;&amp; (
-                      &lt;div className="mt-4 p-3 rounded-xl bg-white border"&gt;
-                        &lt;div className="font-bold"&gt;Resultado: {quizResult} / {quizQuestions.length}&lt;/div&gt;
-                        &lt;div className="text-sm text-gray-700"&gt;{quizResult === quizQuestions.length ? '¡Perfecto!' : 'Buen intento, repasa las etapas y vuelve a intentar.'}&lt;/div&gt;
+                      &lt;div className={`mt-4 p-3 rounded-xl bg-white border quiz-feedback ${quizResult === quizQuestions.length ? 'good' : 'bad'}`} role="status" aria-live="polite"&gt;
+                        &lt;div className="text-xl"&gt;{quizResult === quizQuestions.length ? '🌟 ¡Excelente!' : '🌧️ Sigue intentando'}&lt;/div&gt;
+                        &lt;div className="text-sm"&gt;Resultado: {quizResult} / {quizQuestions.length}&lt;/div&gt;
                       &lt;/div&gt;
                     )}
                   &lt;/div&gt;
@@ -1087,7 +1132,7 @@ export default WaterCycle;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-19T17:07:00.350Z
+                at 2025-11-19T17:43:01.070Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

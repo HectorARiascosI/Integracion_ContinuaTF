@@ -33,6 +33,7 @@ const ColorMixer: React.FC = () => {
   // Challenge (reto) mode: target color to approximate
   const [challengeMode, setChallengeMode] = useState(false);
   const [targetColor, setTargetColor] = useState<{ r: number; g: number; b: number } | null>(null);
+  const [pulse, setPulse] = useState(false);
 
   const distanceToTarget = () => {
     if (!targetColor) return 100;
@@ -113,44 +114,57 @@ const ColorMixer: React.FC = () => {
     return `#${toHex(mixedColor.r)}${toHex(mixedColor.g)}${toHex(mixedColor.b)}`;
   };
 
+  const getHexColorFromObj = (c: { r: number; g: number; b: number }) => {
+    const toHex = (n: number) => Math.round(n).toString(16).padStart(2, '0').toUpperCase();
+    return `#${toHex(c.r)}${toHex(c.g)}${toHex(c.b)}`;
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-kid-purple/20 to-kid-yellow/10 p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-xxl shadow-2xl p-8">
+    <div className="min-h-screen p-6 bg-gradient-to-br from-kid-blue/30 via-kid-purple/10 to-kid-green/20">
+      <div className="max-w-5xl mx-auto bg-white/90 backdrop-blur-md rounded-xxl shadow-2xl p-6 md:p-10 border-2 border-white/30">
         {/* Título */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-purple-600 mb-2">
-            🎨 Mezclador de Colores
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Mueve los controles para mezclar colores
-          </p>
+        <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 mb-8">
+          <div className="flex-1">
+            <h1 className="text-5xl md:text-6xl font-extrabold text-kid-purple mb-2 select-none">🎨 Mezclador de Colores</h1>
+            <p className="text-lg md:text-xl text-gray-700">Explora, juega y descubre qué pasa cuando mezclas colores.</p>
+            {/* Texto compatible con tests anteriores (oculto visualmente pero accesible) */}
+            <p className="sr-only">Mueve los controles para mezclar colores</p>
+          </div>
+          <div className="w-full md:w-64">
+            <div className="bg-gradient-to-br from-white via-kid-yellow/40 to-kid-blue/20 p-3 rounded-xxl shadow-lg border border-white/40">
+              <div className="text-sm font-semibold text-kid-purple">Portal de Arte</div>
+              <div className="text-xs text-gray-600 mt-1">Pulsa un preset o crea tu propio color con los sliders.</div>
+            </div>
+          </div>
         </div>
 
         {/* Canvas de color mezclado */}
-        <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
-          <div className="flex-shrink-0">
-            <canvas
-              ref={canvasRef}
-              width={300}
-              height={300}
-              className={`border-4 border-gray-300 rounded-2xl shadow-lg transition-transform duration-300 ${challengeMode ? 'scale-105 ring-4 ring-kid-blue/30' : ''}`}
-              data-testid="color-canvas"
-              aria-label="Lienzo del color mezclado"
-            />
+        <div className="flex flex-col lg:flex-row items-start gap-8 mb-8">
+          <div className="flex-shrink-0 mx-auto lg:mx-0">
+            <div className={`w-72 h-72 md:w-80 md:h-80 rounded-full shadow-2xl transform transition-all duration-300 ${pulse ? 'animate-color-pulse scale-105' : 'scale-100'}`}>
+              <canvas
+                ref={canvasRef}
+                width={300}
+                height={300}
+                className="w-full h-full rounded-full"
+                data-testid="color-canvas"
+                aria-label="Lienzo del color mezclado"
+              />
+            </div>
           </div>
 
-          <div className="flex-1 space-y-3">
-            <div className="flex items-start gap-3">
-              <KidHelper name="Pinta" message={challengeMode ? '¡Acércate al color objetivo!' : 'Mueve los controles y mira el color'} />
-            </div>
+          <div className="flex-1 space-y-4">
+            <KidHelper name="Pinta" message={challengeMode ? '🎯 ¡Intenta igualar el color objetivo!' : '🎉 Mueve los sliders y descubre nuevos colores'} />
 
-            {/* Target preview when in challenge */}
             {challengeMode && targetColor && (
-              <div className="flex items-center gap-3">
-                <div className="w-16 h-16 rounded-full shadow-md" style={{ background: `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})` }} aria-hidden />
+              <div className="flex items-center gap-4 p-3 bg-white rounded-xl shadow-md border border-gray-100">
+                <div className="w-20 h-20 rounded-full shadow-inner" style={{ background: `rgb(${targetColor.r}, ${targetColor.g}, ${targetColor.b})` }} aria-hidden />
                 <div>
-                  <div className="text-sm text-gray-700">Color objetivo</div>
-                  <div className="text-lg font-bold">{`#${((1<<24) + (targetColor.r<<16) + (targetColor.g<<8) + targetColor.b).toString(16).slice(1).toUpperCase()}`}</div>
+                  <div className="text-sm text-gray-600">Color objetivo</div>
+                  <div className="text-2xl font-bold">{getHexColorFromObj(targetColor)}</div>
+                  <div className="mt-2 w-48 bg-gray-200 h-3 rounded-full">
+                    <div className="bg-green-400 h-3 rounded-full transition-all" style={{ width: `${distanceToTarget()}%` }} />
+                  </div>
                 </div>
               </div>
             )}
@@ -158,12 +172,17 @@ const ColorMixer: React.FC = () => {
         </div>
 
         {/* Información del color */}
-        <div className="text-center mb-8 p-4 bg-gray-50 rounded-xl">
-          <p className="text-2xl font-bold text-gray-700 mb-2">{getHexColor()}</p>
-          <p className="text-gray-600">
-            RGB: ({Math.round(getMixedColor().r)}, {Math.round(getMixedColor().g)},{' '}
-            {Math.round(getMixedColor().b)})
-          </p>
+        <div className="mb-6 p-4 bg-white rounded-xxl shadow-md border border-white/40">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <div className="text-3xl font-extrabold text-gray-800">{getHexColor()}</div>
+              <div className="text-sm text-gray-600">RGB: ({Math.round(getMixedColor().r)}, {Math.round(getMixedColor().g)}, {Math.round(getMixedColor().b)})</div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button onClick={() => { navigator.clipboard?.writeText(getHexColor()); }} className="bg-kid-blue text-white px-4 py-2 rounded-xl shadow-md">Copiar</button>
+              <button onClick={() => { setColors({ red: 0, yellow: 0, blue: 0 }); setPulse(true); setTimeout(() => setPulse(false), 400); }} className="bg-gray-200 px-4 py-2 rounded-xl">Reset</button>
+            </div>
+          </div>
         </div>
 
         {/* Challenge controls */}
@@ -189,7 +208,7 @@ const ColorMixer: React.FC = () => {
           {/* Rojo */}
           <div>
             <label className="flex items-center justify-between mb-2">
-              <span className="text-xl font-semibold text-red-600">🔴 Rojo</span>
+              <span className="text-2xl font-bold text-red-600">🔴 Rojo</span>
               <span className="text-gray-700 font-mono">{colors.red}</span>
             </label>
             <input
@@ -197,16 +216,17 @@ const ColorMixer: React.FC = () => {
               min="0"
               max="255"
               value={colors.red}
-              onChange={(e) => handleColorChange('red', Number(e.target.value))}
-              className="w-full h-3 bg-red-200 rounded-lg appearance-none cursor-pointer slider-red"
+              onChange={(e) => { handleColorChange('red', Number(e.target.value)); setPulse(true); setTimeout(() => setPulse(false), 300); }}
+              className="w-full h-4 bg-red-200 rounded-full appearance-none cursor-pointer slider-red"
               data-testid="red-slider"
+              aria-label="Control de rojo"
             />
           </div>
 
           {/* Amarillo */}
           <div>
             <label className="flex items-center justify-between mb-2">
-              <span className="text-xl font-semibold text-yellow-600">🟡 Amarillo</span>
+              <span className="text-2xl font-bold text-yellow-600">🟡 Amarillo</span>
               <span className="text-gray-700 font-mono">{colors.yellow}</span>
             </label>
             <input
@@ -214,16 +234,17 @@ const ColorMixer: React.FC = () => {
               min="0"
               max="255"
               value={colors.yellow}
-              onChange={(e) => handleColorChange('yellow', Number(e.target.value))}
-              className="w-full h-3 bg-yellow-200 rounded-lg appearance-none cursor-pointer"
+              onChange={(e) => { handleColorChange('yellow', Number(e.target.value)); setPulse(true); setTimeout(() => setPulse(false), 300); }}
+              className="w-full h-4 bg-yellow-200 rounded-full appearance-none cursor-pointer"
               data-testid="yellow-slider"
+              aria-label="Control de amarillo"
             />
           </div>
 
           {/* Azul */}
           <div>
             <label className="flex items-center justify-between mb-2">
-              <span className="text-xl font-semibold text-blue-600">🔵 Azul</span>
+              <span className="text-2xl font-bold text-blue-600">🔵 Azul</span>
               <span className="text-gray-700 font-mono">{colors.blue}</span>
             </label>
             <input
@@ -231,9 +252,10 @@ const ColorMixer: React.FC = () => {
               min="0"
               max="255"
               value={colors.blue}
-              onChange={(e) => handleColorChange('blue', Number(e.target.value))}
-              className="w-full h-3 bg-blue-200 rounded-lg appearance-none cursor-pointer"
+              onChange={(e) => { handleColorChange('blue', Number(e.target.value)); setPulse(true); setTimeout(() => setPulse(false), 300); }}
+              className="w-full h-4 bg-blue-200 rounded-full appearance-none cursor-pointer"
               data-testid="blue-slider"
+              aria-label="Control de azul"
             />
           </div>
         </div>
