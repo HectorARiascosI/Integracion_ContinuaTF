@@ -151,6 +151,7 @@ const WaterCycle: React.FC = () => {
                   disabled={isPlaying}
                   className={`play-button-with-progress bg-kid-blue text-white py-3 px-6 rounded-xl kid-btn ${isPlaying ? 'opacity-80' : ''}`}
                   data-testid="play-button"
+                  aria-label="Reproducir ciclo completo"
                   aria-pressed={isPlaying}
                 >
                   ▶️ Reproducir Ciclo
@@ -161,14 +162,14 @@ const WaterCycle: React.FC = () => {
                   disabled={!isPlaying}
                   className="bg-red-500 hover:bg-red-600 disabled:bg-gray-300 text-white font-bold py-3 px-6 rounded-xl transition-all transform hover:scale-105 ml-4"
                   data-testid="stop-button"
-                >
+                <button
                   ⏸️ Detener
                 </button>
               </div>
             </div>
 
             {/* Diagrama SVG simulado */}
-            <div className="relative h-96 bg-gradient-to-b from-blue-100 via-blue-50 to-green-100 rounded-2xl border-4 border-blue-300 overflow-hidden">
+                  className={`absolute water-stage-btn w-16 h-16 rounded-full flex items-center justify-center text-3xl ${{
               {/* Elementos decorativos */}
               <div className="absolute bottom-0 left-0 right-0 h-20 bg-blue-400 opacity-50"></div>
               <div className="absolute top-10 right-10 w-20 h-20 bg-yellow-300 rounded-full opacity-60"></div>
@@ -179,7 +180,8 @@ const WaterCycle: React.FC = () => {
                   key={stage.id}
                   onClick={() => selectStage(stage.id)}
                   onKeyDown={(e) => handleStageKey(e, stage.id)}
-                  disabled={isPlaying}
+                  title={stage.title}
+                  aria-label={stage.title}
                   aria-pressed={activeStage === stage.id}
                   tabIndex={0}
                   className={`absolute water-stage-btn w-16 h-16 rounded-full flex items-center justify-center text-3xl ${
@@ -231,6 +233,7 @@ const WaterCycle: React.FC = () => {
             <div className="bg-white rounded-3xl shadow-2xl p-6 sticky top-8 water-panel">
               {activeStage ? (
                 <div data-testid="stage-info">
+                  <div aria-live="polite" className="sr-only">{activeStage ? `Etapa activa: ${getActiveStageInfo()?.title}` : 'Ninguna etapa activa'}</div>
                   <div className="text-7xl text-center mb-4">
                     <span className="inline-block transform transition-transform duration-300 scale-100" aria-hidden>{getActiveStageInfo()?.emoji}</span>
                   </div>

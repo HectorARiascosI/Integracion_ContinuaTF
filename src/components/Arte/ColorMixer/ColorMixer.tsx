@@ -141,14 +141,18 @@ const ColorMixer: React.FC = () => {
         {/* Canvas de color mezclado */}
         <div className="flex flex-col lg:flex-row items-start gap-8 mb-8">
           <div className="flex-shrink-0 mx-auto lg:mx-0">
-            <div className={`w-72 h-72 md:w-80 md:h-80 rounded-full shadow-2xl transform transition-all duration-300 ${pulse ? 'animate-color-pulse scale-105' : 'scale-100'}`}>
+            <div
+              className={`w-72 h-72 md:w-80 md:h-80 rounded-full shadow-2xl transform transition-all duration-300 ${pulse ? 'animate-color-pulse scale-105' : 'scale-100'}`}
+              role="img"
+              aria-label={`Color mezclado ${getHexColor()}`}
+            >
               <canvas
                 ref={canvasRef}
                 width={300}
                 height={300}
                 className="w-full h-full rounded-full"
                 data-testid="color-canvas"
-                aria-label="Lienzo del color mezclado"
+                aria-hidden="true"
               />
             </div>
           </div>
@@ -183,6 +187,7 @@ const ColorMixer: React.FC = () => {
               <button onClick={() => { setColors({ red: 0, yellow: 0, blue: 0 }); setPulse(true); setTimeout(() => setPulse(false), 400); }} className="bg-gray-200 px-4 py-2 rounded-xl">Reset</button>
             </div>
           </div>
+          <div aria-live="polite" className="sr-only">Color actual {getHexColor()}</div>
         </div>
 
         {/* Challenge controls */}
@@ -220,6 +225,9 @@ const ColorMixer: React.FC = () => {
               className="w-full h-4 bg-red-200 rounded-full appearance-none cursor-pointer slider-red"
               data-testid="red-slider"
               aria-label="Control de rojo"
+              aria-valuemin={0}
+              aria-valuemax={255}
+              aria-valuenow={colors.red}
             />
           </div>
 
@@ -238,6 +246,9 @@ const ColorMixer: React.FC = () => {
               className="w-full h-4 bg-yellow-200 rounded-full appearance-none cursor-pointer"
               data-testid="yellow-slider"
               aria-label="Control de amarillo"
+              aria-valuemin={0}
+              aria-valuemax={255}
+              aria-valuenow={colors.yellow}
             />
           </div>
 
@@ -256,6 +267,9 @@ const ColorMixer: React.FC = () => {
               className="w-full h-4 bg-blue-200 rounded-full appearance-none cursor-pointer"
               data-testid="blue-slider"
               aria-label="Control de azul"
+              aria-valuemin={0}
+              aria-valuemax={255}
+              aria-valuenow={colors.blue}
             />
           </div>
         </div>

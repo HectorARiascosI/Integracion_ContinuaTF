@@ -256,6 +256,7 @@ const MultiplicationTable: React.FC = () => {
                     onChange={(e) => handleAnswerChange(index, e.target.value)}
                     disabled={equation.showResult}
                     className={getInputClass(equation)}
+                    aria-label={`Respuesta para ${equation.equation}`}
                     placeholder="?"
                     data-testid={`answer-input-${index}`}
                   />
@@ -266,6 +267,7 @@ const MultiplicationTable: React.FC = () => {
                       disabled={!equation.userAnswer}
                       className="kid-btn bg-kid-blue hover:scale-105 disabled:bg-gray-300 text-white transition-transform"
                       data-testid={`verify-button-${index}`}
+                      aria-label={`Verificar respuesta ${index + 1} para ${equation.equation}`}
                     >
                       ✓ Verificar
                     </button>
