@@ -180,6 +180,10 @@ const MultiplicationTable: React.FC = () => {
                         ))}
                       </div>
                     </div>
+
+                    {/* Compatibilidad con tests antiguos: elemento único con texto 'Puntuación: X / Y' */}
+                    <div className="font-semibold text-gray-700 sr-only">Puntuación: {score} / {totalAnswered}</div>
+
                     {totalAnswered === 10 && (
                       <p className="text-lg font-bold text-indigo-600 mt-1">
                         {score >= 8
