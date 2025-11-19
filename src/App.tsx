@@ -68,6 +68,8 @@ function App() {
 
   return (
     <div>
+      {/* Skip link for keyboard users */}
+      <a href="#content" className="sr-only-focusable">Ir al contenido</a>
       {/* Navbar */}
       {currentPage !== 'home' && (
         <nav className="bg-white shadow-md p-4">
@@ -81,7 +83,7 @@ function App() {
       )}
 
       {/* Contenido */}
-      {renderPage()}
+      <main id="content">{renderPage()}</main>
     </div>
   );
 }

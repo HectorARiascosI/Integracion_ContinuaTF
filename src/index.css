@@ -264,3 +264,25 @@
     animation: spin-sun 20s linear infinite;
   }
 }
+
+/* Skip-link helper: visually hidden but becomes visible when focused */
+.sr-only-focusable {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.sr-only-focusable:focus, .sr-only-focusable:active {
+  position: static;
+  left: 0;
+  width: auto;
+  height: auto;
+  margin: 8px;
+  padding: 8px 12px;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.12);
+}
